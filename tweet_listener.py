@@ -17,12 +17,12 @@ api = tweepy.API(auth)
 print(api)
 
 col = []
+counter = 0
 
 
 
 class MyStreamListener(tweepy.StreamListener):
     
-    counter = 0
     
     def __init__(self, max_tweets=1000, *args, **kwargs):
         self.max_tweets = max_tweets
@@ -30,13 +30,12 @@ class MyStreamListener(tweepy.StreamListener):
         super().__init__(*args, **kwargs)
     
     def on_connect(self):
-        self.counter = 0
         self.start_time = datetime.now()
     
     def on_status(self, status):
         try:
-            if status.coordinates:
-                print('coords:', status.coordinates)
+            #if status.coordinates:
+            #    print('coords:', status.coordinates)
             self.process(status._json)
         except KeyError as e:
             print ("KeyError: ", e)
@@ -52,13 +51,13 @@ class MyStreamListener(tweepy.StreamListener):
                          'user_screen_name': data['user']['screen_name']}
             col.append(tweet_dict)
 
-            self.counter += 1
-            if self.counter % 10 == 0:
-                value = int(100.00 * self.counter / self.max_tweets)
+            counter += 1
+            if counter % 10 == 0:
+                value = int(100.00 * counter / self.max_tweets)
                 mining_time = datetime.now() - self.start_time
-                print("%s/%s" % (self.counter, self.max_tweets))
-                print("Tweets/Sec: %.1f" % (self.counter / mining_time.seconds))
-                if self.counter >= self.max_tweets:
+                print("%s/%s" % (counter, self.max_tweets))
+                print("Tweets/Sec: %.1f" % (counter / mining_time.seconds))
+                if counter >= self.max_tweets:
                     myStream.disconnect()
                     print("Finished")
                     print("Total Mining Time: %s" % (mining_time))
@@ -67,7 +66,7 @@ class MyStreamListener(tweepy.StreamListener):
 
 
     
-myStreamListener = MyStreamListener(max_tweets=100000)
+myStreamListener = MyStreamListener(max_tweets=1000000)
 myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
 print(myStream)
 
