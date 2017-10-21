@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset = "utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+
+      /* Remove the navbar's default margin-bottom and rounded borders */ 
+      .navbar {
+        margin-bottom: 0;
+        border-radius: 0;
+      }
+      
+      /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+      .row.content {height: 650px;}
+      
+      /* Set gray background color and 100% height */
+      .sidenav {
+        padding-top: 20px;
+        background-color: #f1f1f1;
+        height: 100%;
+      }
+      
+      /* Set black background color, white text and some padding */
+      footer {
+        background-color: #333;
+        color: #999;
+        padding: 10px;
+      }
+      
+      /* On small screens, set height to 'auto' for sidenav and grid */
+      @media screen and (max-width: 767px) {
+        .sidenav {
+          height: auto;
+          padding: 15px;
+        }
+        .row.content {height:auto;} 
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-expand-lg fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">TwittMap</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="search">Search
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#" onclick="searchTweet(1)">Page 1-1</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="row content" id="map">
+      </div>
+    </div>
+    <footer class="container-fluid text-center">
+      <p>Copyright: Xianda Gao</p>
+    </footer>
+    <script>
+      var map;
+      var locations = [
+        [-31.563910, 147.154312],
+        [-33.718234, 150.363181],
+        [-33.727111, 150.371124],
+        [-33.848588, 151.209834],
+        [-33.851702, 151.216968],
+        [-34.671264, 150.863657],
+        [-35.304724, 148.662905],
+        [-36.817685, 175.699196],
+        [-36.828611, 175.790222],
+        [-37.750000, 145.116667],
+        [-37.759859, 145.128708],
+        [-37.765015, 145.133858],
+        [-37.770104, 145.143299],
+        [-37.773700, 145.145187],
+        [-37.774785, 145.137978],
+        [-37.819616, 144.968119],
+        [-38.330766, 144.695692],
+        [-39.927193, 175.053218],
+        [-41.330162, 174.865694],
+        [-42.734358, 147.439506],
+        [-42.734358, 147.501315],
+        [-42.735258, 147.438000],
+        [-43.999792, 170.463352]
+      ];
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 2,
+          center: new google.maps.LatLng(2.8,-187.3)
+        });
+      }
+
+      function searchTweet(x) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function()
+          {
+          if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+              alert(xmlhttp.responseText);
+            }
+          }
+        xmlhttp.open("GET","",true);
+        xmlhttp.send();
+        putMarker(locations);
+      }
+
+      function putMarker(positions) {
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        var markers = positions.map(function(pos, i) {
+          return new google.maps.Marker({
+            position: new google.maps.LatLng(pos[0], pos[1]),
+            label: labels[i % labels.length]
+          });
+        });
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }
+
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHtWtQTrsDweM3jLWeR4h3JPIQKpKtG-s&callback=initMap">
+    </script>
+  </body>
+</html>
