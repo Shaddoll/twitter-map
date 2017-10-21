@@ -7,10 +7,19 @@ import json
 
 #g_Se = SearchEngine()
 
+tweets_offline = [] # offline preprocessed data, inverted index
+
 def home(request):
     return render_to_response("index.html")
 
 def search(request):
     keyword = request.GET.get('keyword', '')
     tweets = g_Se.search(keyword)
+    return HttpResponse(json.dumps({'keyword': keyword, 'tweets': tweets}))
+
+def search_offline(request):
+    keyword = request.GET.get('keyword', '')
+    tweets = []
+    if (keyword in tweets_offline):
+        tweets = tweets_offline[keyword]
     return HttpResponse(json.dumps({'keyword': keyword, 'tweets': tweets}))
