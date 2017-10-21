@@ -1,8 +1,8 @@
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 
-AWS_ACCESS_KEY = ''
-AWS_SECRET_KEY = ''
+AWS_ACCESS_KEY = 'aaa'
+AWS_SECRET_KEY = 'bbb'
 region = 'us-east-1'
 service = 'es'
 

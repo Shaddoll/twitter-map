@@ -5,7 +5,7 @@ import json
 
 # Create your views here.
 
-g_Se = SearchEngine()
+#g_Se = SearchEngine()
 
 def home(request):
     return render_to_response("index.html")
