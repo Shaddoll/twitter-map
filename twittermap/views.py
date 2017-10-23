@@ -17,6 +17,11 @@ def search(request):
     tweets = g_Se.search(keyword)
     return HttpResponse(json.dumps({'keyword': keyword, 'tweets': tweets}))
 
+def search_range(request):
+    lat, lon
+    tweets = g_Se.search_range(lat, lon)
+    return HttpResponse(json.dumps({'tweets': tweets}))
+
 def search_offline(request):
     keyword = request.GET.get('keyword', '')
     tweets = []

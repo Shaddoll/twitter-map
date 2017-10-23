@@ -6,23 +6,49 @@ AWS_SECRET_KEY = 'bbb'
 region = 'us-east-1'
 service = 'es'
 
-awsauth = AWS4Auth(AWS_ACCESS_KEY, AWS_SECRET_KEY, region, service)
+#awsauth = AWS4Auth(AWS_ACCESS_KEY, AWS_SECRET_KEY, region, service)
 
-host = ''
+host = 'localhost'
+port = 9200
 
 class SearchEngine():
-    es = Elasticsearch(
+    """es = Elasticsearch(
         hosts = [{'host': host, 'port': 443}],
         http_auth = awsauth,
         use_ssl = True,
         verify_certs = True,
         connection_class = RequestsHttpConnection
-    )
+    )"""
+    es = Elasticsearch([{'host': host, 'port': port}])
 
     def search(self, keyword):
-        response = self.es.search(index="tweet", body={"query": {"match": {'text': {'query': keyword}}}})
+        response = self.es.search(index="tweet",
+                                  body={"query": {
+                                            "match": {
+                                                'text': {
+                                                    'query': keyword
+                                                    }
+                                                }
+                                            }
+                                        })
         response = response['hits']['hits']
         tweets = []
         for text in response:
             tweets.append(text["_source"])
         return tweets
+
+    def search_range(self, lat, lon):
+        query = {
+            "query": {
+                "bool": {
+                    "filter": {
+                        "geo_distance": {
+                            "distance": "1km",
+                            "distance_type": "plane",
+                            "coordinates": [lat, lon]
+                        }
+                    }
+                }
+            }
+        }
+        response = self.es.search(index = "tweet", body=query)
