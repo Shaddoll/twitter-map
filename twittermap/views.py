@@ -5,9 +5,7 @@ import json
 
 # Create your views here.
 
-#g_Se = SearchEngine()
-
-tweets_offline = [] # offline preprocessed data, inverted index
+g_Se = SearchEngine()
 
 def home(request):
     return render_to_response("index.html")
@@ -15,16 +13,10 @@ def home(request):
 def search(request):
     keyword = request.GET.get('keyword', '')
     tweets = g_Se.search(keyword)
-    return HttpResponse(json.dumps({'keyword': keyword, 'tweets': tweets}))
+    return HttpResponse(json.dumps({"keyword": keyword, "tweets": tweets}))
 
 def search_range(request):
-    lat, lon
+    lat = request.GET.get('lat', '')
+    lon = request.GET.get('lon', '')
     tweets = g_Se.search_range(lat, lon)
-    return HttpResponse(json.dumps({'tweets': tweets}))
-
-def search_offline(request):
-    keyword = request.GET.get('keyword', '')
-    tweets = []
-    if (keyword in tweets_offline):
-        tweets = tweets_offline[keyword]
-    return HttpResponse(json.dumps({'keyword': keyword, 'tweets': tweets}))
+    return HttpResponse(json.dumps({"tweets": tweets}))

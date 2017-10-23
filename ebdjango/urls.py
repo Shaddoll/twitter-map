@@ -14,12 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.contrib import admin
+#from django.contrib import admin
 from twittermap import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    #url(r'^admin/', admin.site.urls),
     url(r'^$', views.home),
     url(r'^search/', views.search),
-    url(r'^searchoff/', views.search_offline),
+    url(r'^searchr/', views.search_range),
 ]

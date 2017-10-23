@@ -22,15 +22,16 @@ class SearchEngine():
     es = Elasticsearch([{'host': host, 'port': port}])
 
     def search(self, keyword):
-        response = self.es.search(index="tweet",
-                                  body={"query": {
-                                            "match": {
-                                                'text': {
-                                                    'query': keyword
-                                                    }
-                                                }
-                                            }
-                                        })
+        query = {
+            "query": {
+                "match": {
+                    'text': {
+                        'query': keyword
+                    }
+                }
+            }
+        }
+        response = self.es.search(index="tweet", body=query)
         response = response['hits']['hits']
         tweets = []
         for text in response:
@@ -52,3 +53,8 @@ class SearchEngine():
             }
         }
         response = self.es.search(index = "tweet", body=query)
+        response = response['hits']['hits']
+        tweets = []
+        for text in response:
+            tweets.append(text["_source"])
+        return tweets
