@@ -18,5 +18,5 @@ def search(request):
 def search_range(request):
     lat = request.GET.get('lat', '')
     lon = request.GET.get('lon', '')
-    tweets = g_Se.search_range(lat, lon)
+    tweets = g_Se.search_range(float(lat), float(lon))
     return HttpResponse(json.dumps({"tweets": tweets}))
