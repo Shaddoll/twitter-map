@@ -53,7 +53,16 @@
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="search">Search
             <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onclick="searchTweet(1)">Page 1-1</a></li>
+              <li><a href="#" onclick="searchTweet('school')">school</a></li>
+              <li><a href="#" onclick="searchTweet('Columbia')">Columbia</a></li>
+              <li><a href="#" onclick="searchTweet('Google')">Google</a></li>
+              <li><a href="#" onclick="searchTweet('Facebook')">Facebook</a></li>
+              <li><a href="#" onclick="searchTweet('university')">university</a></li>
+              <li><a href="#" onclick="searchTweet('China')">China</a></li>
+              <li><a href="#" onclick="searchTweet('music')">music</a></li>
+              <li><a href="#" onclick="searchTweet('Machine Learning')">Machine Learning</a></li>
+              <li><a href="#" onclick="searchTweet('C++')">C++</a></li>
+              <li><a href="#" onclick="searchTweet('Python')">Python</a></li>
             </ul>
           </li>
         </ul>
@@ -98,6 +107,27 @@
           zoom: 2,
           center: new google.maps.LatLng(2.8,-187.3)
         });
+        map.addListener('click', function(evt) {
+                console.log('clicked!');
+                console.log(evt.latLng.lat());
+                console.log(evt.latLng.lng());
+
+                map.setCenter(evt.latLng);
+                searchLocation(evt.latLng);
+          });
+      }
+
+      function searchLocation(latLng) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function()
+          {
+          if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+              alert(xmlhttp.responseText);
+            }
+          }
+        xmlhttp.open("GET", "/searchr?lon=" + latLng.lng() + "&lat=" + latLng.lat(), true);
+        xmlhttp.send();
       }
 
       function searchTweet(x) {
@@ -109,7 +139,7 @@
               alert(xmlhttp.responseText);
             }
           }
-        xmlhttp.open("GET","",true);
+        xmlhttp.open("GET", "/search?keyword=school", true);
         xmlhttp.send();
         putMarker(locations);
       }
