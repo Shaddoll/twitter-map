@@ -1,3 +1,4 @@
 Django==1.9.12
 elasticsearch==5.4.0
 requests-aws4auth==0.9
+tweepy==3.5.0

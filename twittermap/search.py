@@ -1,25 +1,25 @@
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
+import os
 
-AWS_ACCESS_KEY = 'aaa'
-AWS_SECRET_KEY = 'bbb'
+AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
+AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
 region = 'us-east-1'
 service = 'es'
 
-#awsauth = AWS4Auth(AWS_ACCESS_KEY, AWS_SECRET_KEY, region, service)
+awsauth = AWS4Auth(AWS_ACCESS_KEY, AWS_SECRET_KEY, region, service)
 
-host = 'localhost'
-port = 9200
+host = 'https://search-twittermap-b2dv3f4dcfpxcqzkxjjv5szudy.us-east-1.es.amazonaws.com'
 
 class SearchEngine():
-    """es = Elasticsearch(
+    es = Elasticsearch(
         hosts = [{'host': host, 'port': 443}],
         http_auth = awsauth,
         use_ssl = True,
         verify_certs = True,
         connection_class = RequestsHttpConnection
-    )"""
-    es = Elasticsearch([{'host': host, 'port': port}])
+    )
+    #es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
     def search(self, keyword):
         query = {
