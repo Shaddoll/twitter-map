@@ -55,6 +55,7 @@
             <ul class="dropdown-menu">
               <li><a href="#" onclick="searchTweet('school')">school</a></li>
               <li><a href="#" onclick="searchTweet('Columbia')">Columbia</a></li>
+              <li><a href="#" onclick="searchTweet('Colombia')">Colombia</a></li>
               <li><a href="#" onclick="searchTweet('Google')">Google</a></li>
               <li><a href="#" onclick="searchTweet('Facebook')">Facebook</a></li>
               <li><a href="#" onclick="searchTweet('university')">university</a></li>
@@ -77,6 +78,7 @@
     </footer>
     <script>
       var map;
+      var markerCluster = null;
       var locations = [
         [-31.563910, 147.154312],
         [-33.718234, 150.363181],
@@ -123,25 +125,36 @@
           {
           if (xmlhttp.readyState==4 && xmlhttp.status==200)
             {
-              alert(xmlhttp.responseText);
+              //console.log(xmlhttp.responseText);
+              //alert(1);
+              var json_obj = JSON.parse(xmlhttp.responseText);
+              console.log(json_obj.tweets);
+              putMarker(json_obj.tweets.map(function(tweet, i) {
+                return [tweet.coordinates[1], tweet.coordinates[0]];
+              }));
             }
           }
         xmlhttp.open("GET", "/searchr?lon=" + latLng.lng() + "&lat=" + latLng.lat(), true);
         xmlhttp.send();
       }
 
-      function searchTweet(x) {
+      function searchTweet(keyword) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange=function()
           {
           if (xmlhttp.readyState==4 && xmlhttp.status==200)
             {
-              alert(xmlhttp.responseText);
+              //console.log(xmlhttp.responseText);
+              var json_obj = JSON.parse(xmlhttp.responseText);
+              //console.log(json_obj.tweets[0].coordinates);
+              putMarker(json_obj.tweets.map(function(tweet, i) {
+                return [tweet.coordinates[1], tweet.coordinates[0]];
+              }));
             }
           }
-        xmlhttp.open("GET", "/search?keyword=school", true);
+        xmlhttp.open("GET", "/search?keyword=" + keyword, true);
         xmlhttp.send();
-        putMarker(locations);
+        //putMarker(locations);
       }
 
       function putMarker(positions) {
@@ -152,7 +165,11 @@
             label: labels[i % labels.length]
           });
         });
-        var markerCluster = new MarkerClusterer(map, markers,
+        if (markerCluster != null) {
+          console.log("reset map");
+          markerCluster.clearMarkers();
+        }
+        markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
 
