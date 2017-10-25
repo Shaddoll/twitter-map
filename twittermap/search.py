@@ -46,7 +46,7 @@ class SearchEngine():
                         "geo_distance": {
                             "distance": "1km",
                             "distance_type": "plane",
-                            "coordinates": [lat, lon]
+                            "coordinates": [lon, lat]
                         }
                     }
                 }
