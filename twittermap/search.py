@@ -31,7 +31,7 @@ class SearchEngine():
                 }
             }
         }
-        response = self.es.search(index="tweet", body=query)
+        response = self.es.search(index="tweet", size=2000, body=query)
         response = response['hits']['hits']
         tweets = []
         for text in response:
@@ -52,7 +52,7 @@ class SearchEngine():
                 }
             }
         }
-        response = self.es.search(index = "tweet", body=query)
+        response = self.es.search(index = "tweet", size=2000, body=query)
         response = response['hits']['hits']
         tweets = []
         for text in response:
