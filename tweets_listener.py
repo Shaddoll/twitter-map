@@ -1,10 +1,6 @@
-import numpy as np
-import pandas as pd
 import tweepy
-import re
 from datetime import datetime
 import random
-import ast
 from elasticsearch import Elasticsearch
 
 
@@ -33,15 +29,15 @@ except:
 
 
 class MyStreamListener(tweepy.StreamListener):
-    
-    
+
+
     def __init__(self, max_tweets=1000, *args, **kwargs):
         self.max_tweets = max_tweets
-        super().__init__(*args, **kwargs)
-    
+        super(MyStreamListener, self).__init__(*args, **kwargs)
+
     def on_connect(self):
         self.start_time = datetime.now()
-    
+
     def on_status(self, status):
         try:
             #if status.coordinates:
@@ -49,7 +45,7 @@ class MyStreamListener(tweepy.StreamListener):
             self.process(status._json)
         except KeyError as e:
             print ("KeyError: ", e)
-        
+
 
     def process(self, data):
         if data['coordinates'] is not None:
@@ -87,7 +83,7 @@ class MyStreamListener(tweepy.StreamListener):
         #self.es.index(index='tweet', doc_type='tweet_data', body=json.loads(json.dumps(tweet_dict)))
 
 
-    
+
 myStreamListener = MyStreamListener(max_tweets=1000000)
 myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
 print(myStream)
