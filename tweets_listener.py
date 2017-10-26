@@ -10,10 +10,10 @@ region = 'us-east-1'
 service = 'es'
 awsauth = AWS4Auth(AWS_ACCESS_KEY, AWS_SECRET_KEY, region, service)
 
-api_key = "no6Ezzx7RIDUrC3GaZ4snbEur" # <---- Add your API Key
-api_secret = "28s3AlpV8QZLCfASJKfUAQOr9n90nBf3nymsdMWOZKNYT99Tul" # <---- Add your API Secret
-access_token = "628274682-Qs0DGo8DPYDZNuEFiky2J36ZuD5wOp1DLVxhpLzX" # <---- Add your access token
-access_token_secret = "KbnjGj5rOECQ5uHm8gR20k8Kir52c6SVEmN3sLq0EgtKV" # <---- Add your access token secret
+api_key = os.environ.get('TWEET_API_KEY')
+api_secret = os.environ.get('TWEET_SECRET_KEY')
+access_token = os.environ.get('TWEET_ACCESS_TOKEN')
+access_token_secret = os.environ.get('TWEET_ACCESS_SECRET')
 
 auth = tweepy.OAuthHandler(api_key, api_secret)
 auth.set_access_token(access_token, access_token_secret)
