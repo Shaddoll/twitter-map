@@ -9,7 +9,7 @@ service = 'es'
 
 awsauth = AWS4Auth(AWS_ACCESS_KEY, AWS_SECRET_KEY, region, service)
 
-host = 'https://search-twittermap-b2dv3f4dcfpxcqzkxjjv5szudy.us-east-1.es.amazonaws.com'
+host = 'search-django-bdjdxhfakpxgveshtpficlgk7e.us-east-1.es.amazonaws.com'
 
 class SearchEngine():
     es = Elasticsearch(
@@ -44,7 +44,7 @@ class SearchEngine():
                 "bool": {
                     "filter": {
                         "geo_distance": {
-                            "distance": "100km",
+                            "distance": "1000km",
                             "coordinates": [lon, lat]
                         }
                     }
