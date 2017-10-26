@@ -44,7 +44,7 @@ class SearchEngine():
                 "bool": {
                     "filter": {
                         "geo_distance": {
-                            "distance": "100km",
+                            "distance": "500km",
                             "coordinates": [lon, lat]
                         }
                     }
