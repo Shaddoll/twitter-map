@@ -1,8 +1,14 @@
-import tweepy
 from datetime import datetime
-import random
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, RequestsHttpConnection
+from requests_aws4auth import AWS4Auth
+import tweepy, random, os
 
+
+AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
+AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
+region = 'us-east-1'
+service = 'es'
+awsauth = AWS4Auth(AWS_ACCESS_KEY, AWS_SECRET_KEY, region, service)
 
 api_key = "no6Ezzx7RIDUrC3GaZ4snbEur" # <---- Add your API Key
 api_secret = "28s3AlpV8QZLCfASJKfUAQOr9n90nBf3nymsdMWOZKNYT99Tul" # <---- Add your API Secret
@@ -18,9 +24,15 @@ print(api)
 col = []
 counter = 0
 
-host = 'localhost'
-port = 9200
-es = Elasticsearch([{'host': host, 'port': port}])
+host = 'search-django-bdjdxhfakpxgveshtpficlgk7e.us-east-1.es.amazonaws.com'
+#es = Elasticsearch([{'host': host, 'port': port}])
+es = Elasticsearch(
+    hosts = [{'host': host, 'port': 443}],
+    http_auth = awsauth,
+    use_ssl = True,
+    verify_certs = True,
+    connection_class = RequestsHttpConnection
+)
 mappings = {"mappings":{"tweet_data":{"properties":{"coordinates":{"type":"geo_point"},"created_at":{"type":"text"},"text":{"type":"text"},"timestamp_ms":{"type":"text"},"user_name":{"type":"text"},"user_screen_name":{"type":"text"}}}}}
 try:
     es.indices.create(index='tweet', body=mappings)
